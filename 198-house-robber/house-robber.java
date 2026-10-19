@@ -1,10 +1,10 @@
 class Solution {
-    public int solve(int i, int[] arr){
+    public int solveUsingRec(int i, int[] arr){
         if(arr.length == 1) return arr[0];
         if(i >= arr.length) return 0;
 
-        int include = arr[i] + solve(i+2,arr);
-        int exclude = 0 + solve(i+1,arr);
+        int include = arr[i] + solveUsingRec(i+2,arr);
+        int exclude = 0 + solveUsingRec(i+1,arr);
         return Math.max(include, exclude);
     }
     public int solveUsingDP(int i, int[] dp ,int[] arr){
@@ -35,6 +35,22 @@ class Solution {
         //step 4 :return the answer , which you have passed as starting point in recursive code
         return dp[0];
     }
+
+    //space optimisation
+    public int solve(int[] nums){
+        int next1 = 0;
+        int next2 = 0;
+        int curr = 0;
+        for(int i=nums.length-1;i>=0;i--){
+            int include = nums[i] + next2;
+            int exclude = 0 + next1;
+            curr = Math.max(include,exclude);
+            next2 = next1;
+            next1 = curr;
+
+        }
+        return curr; 
+    }
     public int rob(int[] nums) {
         // int ans = solve(0,nums);
         // return ans;
@@ -46,7 +62,8 @@ class Solution {
         // return ans;
 
         //now lets move onto next step , that is tabulation
-        int ans = solveUsingTabulation(nums);
+        // int ans = solveUsingTabulation(nums);
+        int ans = solve(nums);
         return ans;
 
     }
