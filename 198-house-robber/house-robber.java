@@ -8,6 +8,7 @@ class Solution {
         return Math.max(include, exclude);
     }
     public int solveUsingDP(int i, int[] dp ,int[] arr){
+        //solving using memoisation which is top down approach
         if(arr.length == 1) return arr[0];
         if(i >= arr.length) return 0;
         if(dp[i] != -1) return dp[i];
@@ -16,14 +17,36 @@ class Solution {
         dp[i] = Math.max(include,exclude);
         return dp[i];
     }
+    public int solveUsingTabulation(int[] nums){
+        //step 1 :  analyse type of dp that is 1d dp and initialse it
+        int n = nums.length;
+        int[] dp =  new int[n+2];
+        Arrays.fill(dp,-1);
+        
+        //step 2 : analyse the base cases : so if i >= n returns 0 
+        dp[n] = 0;
+        dp[n+1] = 0;
+        //step 3 :  reverse the flow of loop used in recursive code and copy the code
+        for(int i = n-1;i>=0;i--){
+            int include = nums[i] + dp[i+2];
+            int exclude = 0 + dp[i+1];
+            dp[i] = Math.max(include,exclude);
+        }
+        //step 4 :return the answer , which you have passed as starting point in recursive code
+        return dp[0];
+    }
     public int rob(int[] nums) {
         // int ans = solve(0,nums);
         // return ans;
         //So Use DP because it has subproblems which are re-calculating many times
-        int n = nums.length;
-        int[] dp = new int[n];
-        Arrays.fill(dp,-1);
-        int ans = solveUsingDP(0,dp,nums);
+        // int n = nums.length;
+        // int[] dp = new int[n];
+        // Arrays.fill(dp,-1);
+        // int ans = solveUsingDP(0,dp,nums);
+        // return ans;
+
+        //now lets move onto next step , that is tabulation
+        int ans = solveUsingTabulation(nums);
         return ans;
 
     }
